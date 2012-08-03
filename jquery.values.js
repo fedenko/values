@@ -8,8 +8,7 @@ $.fn.values = function(data) {
     var form = $(this);
 
     if(typeof data != 'object') {
-        var els = $(':input', form).get();
-        console.log(els);
+        var els = $(':input:not(:disabled)', form).get();
         // return all data
         var data = {};
 
