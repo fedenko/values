@@ -7,26 +7,30 @@ based on http://stackoverflow.com/a/1490431/.
 
 $.fn.values = (data) ->
   $form = $(this)
-  if(typeof data != 'object')
+  if(typeof data != "object")
     data = {}
-    $els = $(':input:not(:disabled)', $form).get()
-    $els.each ->
+    els = $(":input:not(:disabled)", $form).get()
+    $.each els, ->
       switch @nodeName.toLowerCase()
         when "input"
           switch @type
             when "radio", "checkbox"
-              if (typeof data[@name] == 'undefined')
+              if (typeof data[@name] == "undefined")
                   data[@name] = []
               if (@checked)
-                  data[@name].push(@value || '')
+                  data[@name].push(@value || "")
             else
-              data[@name] = @value || ''
+              data[@name] = @value || ""
         when "select", "textarea"
-          data[@name] = @value || ''
+          data[@name] = @value || ""
       return
     data
   else
     $.each data, (key, value) ->
-      $(':input[name='+key+']', $form).val(value);
+      $input = $(":input[name=#{key}]", $form)
+      if $input.is(":radio, :checkbox") and typeof value != "object"
+        $input.val([value]);
+      else
+        $input.val(value);
       return
     $form
